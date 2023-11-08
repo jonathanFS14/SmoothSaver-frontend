@@ -13,13 +13,17 @@ async function initGetAllStoresByZip() {
   document.getElementById("tbl-body").innerHTML = "";
   const zip = document.getElementById("zip").value;
   const spinner = document.getElementById('spinner');
+  
   try {
     spinner.style.display = "block";
     const response = await fetch(URL + "/" + zip);
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
     const json = await response.json();
+    if (json.length === 0) {
+      document.getElementById("error").innerHTML = "Ingen butikker fundet, indtast et rigtig postnummer";
+      }
     const tableRows = json.map(storeData => 
       `<tr>
           <td>${storeData.store.name}</td>
@@ -30,8 +34,8 @@ async function initGetAllStoresByZip() {
     const tableRowsAsStr = tableRows.join("");
     document.getElementById("tbl-body").innerHTML = tableRowsAsStr;
   } catch (error) {
-    console.error('Could not fetch the data: ', error);
     document.getElementById("error").innerHTML = error;
+    console.error('Could not fetch the data: ', error);
   }finally {
     spinner.style.display = "none";
   }
