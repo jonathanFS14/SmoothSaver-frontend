@@ -3,12 +3,9 @@ import {sanitizeStringWithTableRows, makeOptionsToken, handleHttpErrors} from "/
 
 const URL = API_URL + "/salling"
 
-document.getElementById("getAllStoresByZip").addEventListener("click", initGetAllStoresByZip1)
-import { sanitizeStringWithTableRows, makeOptionsToken, handleHttpErrors } from "../../../utils.js"
-
 document.getElementById("zip-form").addEventListener("submit", function (event) {
     event.preventDefault();
-    initGetAllStoresByZip();
+    initGetAllStoresByZip1();
 });
 
 async function initGetAllStoresByZip() {
@@ -21,11 +18,7 @@ async function initGetAllStoresByZip() {
         .then(handleHttpErrors)
         .then(res => res.json())
         .catch(err => document.getElementById("error").innerText = err)
-
-        const tableRows = stores.map(store => 
-   
-
-    const tableRows = stores.map(store =>
+    const tableRows = stores.map(store => 
         `<tr>
             <td>${store.store.address.street}</td>
             <td>${store.store.brand}</td>
