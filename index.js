@@ -2,22 +2,18 @@ import { API_URL } from "/settings.js"
 import {sanitizeStringWithTableRows, makeOptionsToken, handleHttpErrors} from "/utils.js"
 
 const URL = API_URL + "/salling"
-<<<<<<< HEAD
 
 document.getElementById("getAllStoresByZip").addEventListener("click", initGetAllStoresByZip1)
-=======
 import { sanitizeStringWithTableRows, makeOptionsToken, handleHttpErrors } from "../../../utils.js"
 
 document.getElementById("zip-form").addEventListener("submit", function (event) {
     event.preventDefault();
     initGetAllStoresByZip();
 });
->>>>>>> 60d73bc50fe858b41c416913440c6e261a3e4904
 
 async function initGetAllStoresByZip() {
     const zip = document.getElementById("zip").value;
     const options = makeOptionsToken("GET", null, false);
-<<<<<<< HEAD
     try {
         console.log(URL + "/" + zip)
 
@@ -27,11 +23,9 @@ async function initGetAllStoresByZip() {
         .catch(err => document.getElementById("error").innerText = err)
 
         const tableRows = stores.map(store => 
-=======
-    const stores = await fetch(URL + "/" + zip, options).then(res => res.json());
+   
 
     const tableRows = stores.map(store =>
->>>>>>> 60d73bc50fe858b41c416913440c6e261a3e4904
         `<tr>
             <td>${store.store.address.street}</td>
             <td>${store.store.brand}</td>
@@ -44,7 +38,6 @@ async function initGetAllStoresByZip() {
        console.log(err);
     }
 }
-<<<<<<< HEAD
 
 async function initGetAllStoresByZip1() {
     const zip = document.getElementById("zip").value;
@@ -80,5 +73,3 @@ function processJSONData(json) {
     });
   }
 
-=======
->>>>>>> 60d73bc50fe858b41c416913440c6e261a3e4904
