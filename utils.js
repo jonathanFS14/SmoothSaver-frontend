@@ -88,6 +88,7 @@ export function renderHtml(template, contentId) {
    * SEE Here for info related to how to use DomPurify and the function below this semester here:
    * https://docs.google.com/document/d/14aC77ITi9sLCMruYUchu4L93dBqKnoja3I7TwR0lXw8/edit#heading=h.jj4ss771miw5 
   */
+
   export function sanitizeStringWithTableRows(tableRows) {
     let secureRows = DOMPurify.sanitize("<table>" + tableRows + "</table>")
     secureRows = secureRows.replace("<table>", "").replace("</table>", "")
