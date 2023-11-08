@@ -22,7 +22,7 @@ async function initGetAllStoresByZip() {
     }
     const json = await response.json();
     if (json.length === 0) {
-      document.getElementById("error").innerHTML = "Ingen butikker fundet, indtast et rigtig postnummer";
+      document.getElementById("error").innerHTML = "Ingen butikker fundet, indtast et andet postnummer";
       }
     const tableRows = json.map(storeData => 
       `<tr>
