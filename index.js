@@ -12,7 +12,9 @@ async function initGetAllStoresByZip() {
   document.getElementById("error").innerHTML = "";
   document.getElementById("tbl-body").innerHTML = "";
   const zip = document.getElementById("zip").value;
+  const spinner = document.getElementById('spinner');
   try {
+    spinner.style.display = "block";
     const response = await fetch(URL + "/" + zip);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -30,6 +32,8 @@ async function initGetAllStoresByZip() {
   } catch (error) {
     console.error('Could not fetch the data: ', error);
     document.getElementById("error").innerHTML = error;
+  }finally {
+    spinner.style.display = "none";
   }
 }
 

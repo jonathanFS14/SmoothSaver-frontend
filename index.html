@@ -18,6 +18,10 @@
         <div class="input-group">
             <input type="text" id="zip" class="result" placeholder="Indtast navn eller postnummer">
             <button class="btn btn-dark" type="submit" id="btn-get-all-stores">Se tilbud</button>
+            <div id="spinner" class="spinner-border text-success" role="status"
+            style="margin-left:1em;border-radius: 50%;display:none;">
+            <span class="visually-hidden">Loading...</span>
+          </div>
         </div>
     </form>
     <p id="error"></p>
