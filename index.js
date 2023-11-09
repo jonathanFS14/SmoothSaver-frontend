@@ -30,8 +30,8 @@ async function initGetAllStoresByZip() {
       <div class="card-body">
         <h5 class="card-title">${storeData.store.name}</h5>
         <p class="card-text">${storeData.store.address.street}</p>
-        <p class="card-text">åbningstid: ${storeData.store.hours.open}</p>
-        <p class="card-text">butikken lukker: ${storeData.store.hours.close}</p>
+        <p class="card-text">åbningstid: ${storeData.store.hours[0].open}</p>
+        <p class="card-text">butikken lukker: ${storeData.store.hours[0].close}</p>
         <a href="#" class="btn btn-primary">Gå til butikken</a>
       </div>
     </div>
