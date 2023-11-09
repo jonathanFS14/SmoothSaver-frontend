@@ -41,14 +41,14 @@ async function initGetAllStoresByZip() {
       const closeTime = new Date(storeData.store.hours[0].close + 'Z').toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
       return `
-      <div class="card" style="width: 18rem;">
-      <img class="card-img-top" width="40px" length="40px" src="${getStoreImage(storeData.store.name)}" alt="">
-      <div class="card-body">
+      <a href="#" class="card-link">
+        <div class="card" style="width: 18rem;">
+        <img class="card-img-top" width="40px" length="40px" src="${getStoreImage(storeData.store.name)}" alt="">
+        <div class="card-body">
         <h5 class="card-title">${storeData.store.name}</h5>
         <p class="card-text">${storeData.store.address.street}</p>
         <p class="card-text">åbningstid: ${openTime}</p>
         <p class="card-text">butikken lukker: ${closeTime}</p>
-        <a href="#" class="btn btn-primary">Gå til butikken</a>
       </div>
     </div>
       `
