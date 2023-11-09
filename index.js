@@ -8,6 +8,19 @@ document.getElementById("zip-form").addEventListener("submit", function (event) 
     initGetAllStoresByZip();
 });
 
+function getStoreImage(storeName) {
+  if(storeName.includes("Netto")) {
+    return "/netto-logo.png";
+  }
+  else if(storeName.includes("føtex")){
+    return "/foetex-logo.png";
+  }
+  else if(storeName.includes("Bilka")){
+    return "/bilka-logo.png";
+    }
+  else return "default-logo.png";
+}
+
 async function initGetAllStoresByZip() {
   document.getElementById("error").innerHTML = "";
   document.getElementById("cards-grid").innerHTML = "";
@@ -15,7 +28,7 @@ async function initGetAllStoresByZip() {
   const spinner = document.getElementById('spinner');
   try {
     spinner.style.display = "block";
-    const response = await fetch(URL + "/" + zip);
+    const response = await fetch(URL + "/zip/" + zip);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
@@ -26,7 +39,7 @@ async function initGetAllStoresByZip() {
     const tableRows = json.map(storeData => 
       `
       <div class="card" style="width: 18rem;">
-      <img class="card-img-top" src="netto-logo.png" alt="">
+      <img class="card-img-top" src="${getStoreImage(storeData.store.name)}" alt="">
       <div class="card-body">
         <h5 class="card-title">${storeData.store.name}</h5>
         <p class="card-text">${storeData.store.address.street}</p>
