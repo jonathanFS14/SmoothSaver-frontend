@@ -8,6 +8,13 @@ document.getElementById("zip-form").addEventListener("submit", function (event) 
     initGetAllStoresByZip();
 });
 
+document.getElementById("cards-grid").onclick = (evt) => {
+
+  const storeId = evt.target.id;
+  console.log(storeId);
+  document.getElementById("msg").innerText = storeId;
+}
+
 function getStoreImage(storeName) {
   if(storeName.includes("Netto")) {
     return "/netto-logo.png";
@@ -39,17 +46,20 @@ async function initGetAllStoresByZip() {
     const tableRows = json.map(storeData =>{
       const openTime = new Date(storeData.store.hours[0].open + 'Z').toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       const closeTime = new Date(storeData.store.hours[0].close + 'Z').toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
       return `
-      <a href="#" class="card-link">
-        <div class="card" style="width: 18rem;">
+      <div id="${storeData.store.id}">
+ 
+        <div id="${storeData.store.id}" class="card" style="width: 18rem;">
         <img class="card-img-top" width="40px" length="40px" src="${getStoreImage(storeData.store.name)}" alt="">
         <div class="card-body">
         <h5 class="card-title">${storeData.store.name}</h5>
         <p class="card-text">${storeData.store.address.street}</p>
         <p class="card-text">åbningstid: ${openTime}</p>
         <p class="card-text">butikken lukker: ${closeTime}</p>
+        <p class="card-text"> store id: ${storeData.store.id}</p>
       </div>
+    </div>
+    
     </div>
       `
   });
@@ -61,6 +71,9 @@ async function initGetAllStoresByZip() {
   }finally {
     spinner.style.display = "none";
   }
+
+
+
 }
 
 
