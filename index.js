@@ -36,20 +36,23 @@ async function initGetAllStoresByZip() {
     if (json.length === 0) {
       document.getElementById("error").innerHTML = "Ingen butikker fundet, indtast et andet postnummer";
       }
-    const tableRows = json.map(storeData => 
-      `
+    const tableRows = json.map(storeData =>{
+      const openTime = new Date(storeData.store.hours[0].open + 'Z').toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const closeTime = new Date(storeData.store.hours[0].close + 'Z').toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      return `
       <div class="card" style="width: 18rem;">
-      <img class="card-img-top" src="${getStoreImage(storeData.store.name)}" alt="">
+      <img class="card-img-top" width="40px" length="40px" src="${getStoreImage(storeData.store.name)}" alt="">
       <div class="card-body">
         <h5 class="card-title">${storeData.store.name}</h5>
         <p class="card-text">${storeData.store.address.street}</p>
-        <p class="card-text">åbningstid: ${storeData.store.hours[0].open}</p>
-        <p class="card-text">butikken lukker: ${storeData.store.hours[0].close}</p>
+        <p class="card-text">åbningstid: ${openTime}</p>
+        <p class="card-text">butikken lukker: ${closeTime}</p>
         <a href="#" class="btn btn-primary">Gå til butikken</a>
       </div>
     </div>
       `
-    );
+  });
     const tableRowsAsStr = tableRows.join("");
     document.getElementById("cards-grid").innerHTML = tableRowsAsStr;
   } catch (error) {
