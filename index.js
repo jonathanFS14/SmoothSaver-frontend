@@ -9,13 +9,19 @@ document.getElementById("zip-form").addEventListener("submit", function (event) 
 });
 
 document.getElementById("cards-grid").onclick = (evt) => {
-
+  evt.preventDefault();
   const storeId = evt.target.id;
   if(storeId === "cards-grid") {
     return;
   }
   initGetStoreById(storeId);
 }
+
+
+document.getElementById("open-ai-form").addEventListener("submit", function (evt) {
+  evt.preventDefault();
+  initGetResponseFromOpenAI();
+});
 
 function getStoreImage(storeName) {
   if(storeName.includes("Netto")) {
@@ -79,18 +85,21 @@ async function initGetAllStoresByZip() {
       }
       const json = await response.json();
       const ingredients = json.clearances.map(clearance => {
-        const endTime = new Date(clearance.offer.endTime).toLocaleTimeString([], { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+      const endTime = new Date(clearance.offer.endTime).toLocaleTimeString([], { day: '2-digit', month: '2-digit', year: "2-digit", hour: '2-digit', minute: '2-digit' });
         return`
             <tr>
             <td> produkt: ${clearance.product.description}</td>
             <td> original pris: ${clearance.offer.originalPrice}</td>
             <td> tilbuds pris: ${clearance.offer.newPrice}</td>
             <td> udløbs dato: ${endTime}</td>
+            <td> <img  style="height:150px;width:150px;" src="${clearance.product.image}" alt="billede"> </td>
+            <td>  <input type="checkbox" id="ingredient-input" value="${clearance.product.description}"></td>
             </tr>
             `
       }); 
      const ingredientssAsStr = ingredients.join("");
      document.getElementById("ingredients").innerHTML = ingredientssAsStr;
+     document.getElementById("fetchmadplan").style.display = "block";
     } catch (error) {
       document.getElementById("error").innerHTML = error;
       console.error('Could not fetch the data: ', error);
@@ -99,6 +108,18 @@ async function initGetAllStoresByZip() {
     }
 }
 
+  async function initGetResponseFromOpenAI(){
+    const answer = document.getElementById("chat-answer");
+    try {
+      
+    } catch (error) {
+      
+    } finally {
+
+    }
+
+
+  }
 
 
 
