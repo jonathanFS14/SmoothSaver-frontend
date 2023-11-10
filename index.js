@@ -114,8 +114,10 @@ async function initGetAllStoresByZip() {
     try {
       spinner.style.display = "block";
       
-    } catch (error) {
       
+    } catch (error) {
+          document.getElementById("error").innerHTML = error;
+    console.error('Could not fetch the data: ', error);
     } finally {
       spinner.style.display = "none";
     }
