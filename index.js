@@ -11,7 +11,6 @@ document.getElementById("zip-form").addEventListener("submit", function (event) 
 document.getElementById("cards-grid").onclick = (evt) => {
 
   const storeId = evt.target.id;
-  console.log(storeId);
   if(storeId === "cards-grid") {
     return;
   }
@@ -79,18 +78,17 @@ async function initGetAllStoresByZip() {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       const json = await response.json();
-     const ingredients = json.map(ingredient => 
-      ingredient.clearances.array.forEach(clearances => {
-        `
-        <tr>
-        <td> produkt: ${clearances.product.description}</td>
-        <td> original pris: ${clearances.offer.originalPrice}</td>
-        <td> tilbuds pris: ${clearances.offer.originalPrice}</td>
-        </tr>
-        `
-      })
-     
-     )
+      const ingredients = json.clearances.map(clearance => {
+        const endTime = new Date(clearance.offer.endTime).toLocaleTimeString([], { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+        return`
+            <tr>
+            <td> produkt: ${clearance.product.description}</td>
+            <td> original pris: ${clearance.offer.originalPrice}</td>
+            <td> tilbuds pris: ${clearance.offer.newPrice}</td>
+            <td> udløbs dato: ${endTime}</td>
+            </tr>
+            `
+      }); 
      const ingredientssAsStr = ingredients.join("");
      document.getElementById("ingredients").innerHTML = ingredientssAsStr;
     } catch (error) {
