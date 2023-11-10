@@ -105,7 +105,7 @@ function initializeTable() {
         <th data-sort="newPrice">Tilbuds Pris <span class="sort-icon"></span></th>
         <th data-sort="endTime">Udløbs Dato <span class="sort-icon"></span></th>
         <th>Billede</th>
-        <th>Handling</th>
+        <th> Vælg </th>
       </tr>
     </thead>
     <tbody id="ingredients-body">
