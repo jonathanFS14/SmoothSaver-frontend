@@ -11,5 +11,3 @@ Simple cost analysis to decide the minimum earnings a project must make to pay f
 
 
 
-A short agenda, either for each group member or shared, for how you plan to spend your 15 min with the matching (technology) exam question:
-
