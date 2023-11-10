@@ -110,12 +110,14 @@ async function initGetAllStoresByZip() {
 
   async function initGetResponseFromOpenAI(){
     const answer = document.getElementById("chat-answer");
+    const spinner = document.getElementById('spinner2');
     try {
+      spinner.style.display = "block";
       
     } catch (error) {
       
     } finally {
-
+      spinner.style.display = "none";
     }
 
 
