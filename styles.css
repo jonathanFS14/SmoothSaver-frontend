@@ -138,9 +138,9 @@ body::before {
   }
 
   #ingredients thead tr {
-    background-color: #009879;
-    color: #ffffff;
-    text-align: left;
+    background-color: #ffd80f;
+    color: #000000;
+    text-align: center;
   }
 
   #ingredients th,
@@ -150,6 +150,7 @@ body::before {
 
   #ingredients tbody tr {
     border-bottom: 1px solid #dddddd;
+    background-color:#fdea8c; 
   }
 
   #ingredients tbody tr:nth-of-type(even) {
