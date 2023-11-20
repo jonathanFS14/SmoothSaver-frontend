@@ -21,6 +21,7 @@ document.getElementById("cards-grid").onclick = (evt) => {
 document.getElementById("open-ai-form").addEventListener("submit", function (evt) {
   evt.preventDefault();
   initGetResponseFromOpenAI();
+  console.log();
 });
 
 function getStoreImage(storeName) {
