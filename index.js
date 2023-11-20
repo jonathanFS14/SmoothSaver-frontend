@@ -16,7 +16,7 @@ document.getElementById("cards-grid").onclick = (evt) => {
   }
   initGetStoreById(storeId);
 }
-
+// test
 
 document.getElementById("open-ai-form").addEventListener("submit", function (evt) {
   evt.preventDefault();
