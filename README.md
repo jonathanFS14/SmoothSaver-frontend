@@ -1,4 +1,5 @@
 # SmoothSaver-frontend
+# Test
 
 Risks you might have identified, and possible parts of this project that have removed/minimised those risks:
 projektet har lav risiko da salling api er gratis at bruge, dog har vi oplevet nogle gange at svaret kan komme rigtig hurtigt eller langsomt. og nogle gange slet ikke noget svar.
