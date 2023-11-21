@@ -10,7 +10,8 @@ import {initFindSales} from "./pages/FindSales/FindSales.js"
 
 window.addEventListener("load", async () => {
 
-  const templateFindSales = await loadHtml("./pages/FindSales/FindSales.html")
+  const templateFindSales = await loadHtml("./pages/FindSales/FindSales.html");
+  const templateLandingPage = await loadHtml("./pages/landingPage/landingPage.html");
 
   const router = new Navigo("/",{hash:true});
   window.router = router
@@ -22,10 +23,9 @@ window.addEventListener("load", async () => {
         }
       })
       .on({
-        "/": () => document.getElementById("content").innerHTML=`
-            <h2>Home</h2>
-            <p>Use the menu to navigate</p>     
-           `,
+        "/": () => {
+          renderHtml(templateLandingPage, "content")
+        },
         "/find-sales": (match) => {
           renderHtml(templateFindSales, "content")
           initFindSales(match)
@@ -42,4 +42,22 @@ window.onerror = function (errorMsg, url, lineNumber, column, errorObj) {
 }
 
 
-//test
+document.getElementById("themeSwitch").addEventListener("click", () => {
+  const getStoredTheme =  localStorage.getItem('theme').valueOf()
+
+  if(getStoredTheme === "light") {  
+    document.documentElement.setAttribute('data-bs-theme', 'dark')
+    setStoredTheme("dark")
+  } else if (getStoredTheme === "dark") {
+    document.documentElement.setAttribute('data-bs-theme', 'light')
+     setStoredTheme("light")
+  }
+
+  function setStoredTheme(theme) {
+   localStorage.setItem('theme', theme)
+  } 
+
+
+
+  
+})
