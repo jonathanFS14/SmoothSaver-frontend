@@ -3,8 +3,6 @@ import {sanitizeStringWithTableRows, makeOptionsToken, handleHttpErrors} from ".
 
 const URL = API_URL + "/salling"
 
-
-
 export function initFindSales(match) {
     document.getElementById("zip-form").addEventListener("submit", function (event) {
         event.preventDefault();
@@ -140,9 +138,9 @@ function initializeTable() {
   document.getElementById("ingredients").appendChild(table);
 }
 
-async function initGetStoreById(storeId) {
+async function initGetStoreById(storeId, page = 0, pageSize = 10) {
   try {
-    const response = await fetch(URL + "/id/" + storeId);
+    const response = await fetch(`${URL}/id/${storeId}?page=${page}&size=${pageSize}`);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
@@ -155,7 +153,7 @@ async function initGetStoreById(storeId) {
             <td>${clearance.offer.originalPrice}</td>
             <td>${clearance.offer.newPrice}</td>
             <td>${endTime}</td>
-            <td><img style="height:150px;width:150px;" src="${clearance.product.image}" alt="billede" onerror="this.src='default-logo.png';"></td>
+            <td><img style="height:150px;width:150px;" src="${clearance.product.image}" alt="billede" onerror="this.src='images/default-logo.png';"></td>
             <td><input type="checkbox" id="ingredient-input" value="${clearance.product.description}"></td>
           </tr>
       `;
@@ -165,12 +163,48 @@ async function initGetStoreById(storeId) {
     initializeTable();
     const tbody = document.getElementById("ingredients-body");
     tbody.innerHTML = ingredients.join("");
+    displayPagination(json.totalPages, page);
+    setupPaginationEventListeners();
     document.getElementById("fetchmadplan").style.display = "block";
   } catch (error) {
     document.getElementById("error").innerHTML = error;
     console.error('Could not fetch the data: ', error);
   }
 }
+
+function displayPagination(totalPages, currentPage) {
+  let paginationHtml = '';
+  if (currentPage > 0) { // Previous Page
+    paginationHtml += `<li class="page-item"><a class="page-link" data-page="${currentPage - 1}" href="#">Previous</a></li>`
+  }
+  // Display page numbers
+  let startPage = Math.max(0, currentPage - 2);
+  let endPage = Math.min(totalPages - 1, currentPage + 2);
+
+  for (let i = startPage; i <= endPage; i++) {
+    if (i === currentPage) {
+      paginationHtml += `<li class="page-item active"><a class="page-link" href="#">${i + 1}</a></li>`
+    } else {
+      paginationHtml += `<li class="page-item"><a class="page-link" data-page="${i}" href="#">${i + 1}</a></li>`
+    }
+  }
+  if (currentPage < totalPages - 1) { // Next Page
+    paginationHtml += `<li class="page-item"><a class="page-link" data-page="${currentPage + 1}" href="#">Next</a></li>`
+  }
+  document.getElementById("pagination").innerHTML = paginationHtml;
+}
+
+function setupPaginationEventListeners() {
+  document.getElementById('pagination').addEventListener('click', function(event) {
+      event.preventDefault();
+      if (event.target.tagName === 'A') {
+          const newPage = parseInt(event.target.getAttribute('data-page'));
+          currentPage = newPage;
+          initGetStoreById(currentStoreId, newPage); // currentStoreId should be the currently viewed store ID
+      }
+  });
+}
+
 
   async function initGetResponseFromOpenAI() {
     const answer = document.getElementById("chat-answer");
