@@ -32,14 +32,29 @@
       </ul>
     </div>
 
-  </div>
-</nav>
-<hr/>
-<div style="margin-left: 50px;margin-right: auto;width: 80%;" id="content"></div>
+<div id="cards-grid">
+</div>
+
+<form id="open-ai-form">
+<table id="ingredients">
 
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js">
-</script>
+</table>
+<button id="fetchmadplan" type="submit" style="display: none;"> Få madplan efter valgte varer</button>
+<div id="spinner2" class="spinner-border text-success" role="status"
+style="margin-left:1em;border-radius: 50%;display:none;">
+<span class="visually-hidden">Loading...</span>
+</div>
+</form>
+
+<p id="chat-answer">
+</p>
+
+<br>
+<br>
+<br>
+
+<script type="module" src="index.js"></script>
 </body>
 
 </html>
