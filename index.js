@@ -18,6 +18,7 @@ document.getElementById("cards-grid").onclick = (evt) => {
 }
 // test
 
+
 document.getElementById("open-ai-form").addEventListener("submit", function (evt) {
   evt.preventDefault();
   initGetResponseFromOpenAI();
@@ -189,6 +190,3 @@ async function initGetStoreById(storeId) {
 
 
   }
-
-
-
