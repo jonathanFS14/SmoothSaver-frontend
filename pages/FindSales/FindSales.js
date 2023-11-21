@@ -1,40 +1,40 @@
-import { API_URL } from "/settings.js"
-import {sanitizeStringWithTableRows, makeOptionsToken, handleHttpErrors} from "/utils.js"
+import { API_URL } from "../../settings.js"
+import {sanitizeStringWithTableRows, makeOptionsToken, handleHttpErrors} from "../../utils.js"
 
 const URL = API_URL + "/salling"
 
-document.getElementById("zip-form").addEventListener("submit", function (event) {
-    event.preventDefault();
-    initGetAllStoresByZip();
-});
 
-document.getElementById("cards-grid").onclick = (evt) => {
-  evt.preventDefault();
-  const storeId = evt.target.id;
-  if(storeId === "cards-grid") {
-    return;
-  }
-  initGetStoreById(storeId);
+
+export function initFindSales(match) {
+    document.getElementById("zip-form").addEventListener("submit", function (event) {
+        event.preventDefault();
+        initGetAllStoresByZip();
+    });
+    document.getElementById("cards-grid").onclick = (evt) => {
+      evt.preventDefault();
+      const storeId = evt.target.id;
+      if(storeId === "cards-grid") {
+        return;
+      }
+      initGetStoreById(storeId);
+    }
+    document.getElementById("open-ai-form").addEventListener("submit", function (evt) {
+      evt.preventDefault();
+      initGetResponseFromOpenAI();
+    });
 }
-// test
-
-document.getElementById("open-ai-form").addEventListener("submit", function (evt) {
-  evt.preventDefault();
-  initGetResponseFromOpenAI();
-  console.log();
-});
 
 function getStoreImage(storeName) {
   if(storeName.includes("Netto")) {
-    return "/netto-logo.png";
+    return "../../images/netto-logo.png";
   }
   else if(storeName.includes("føtex")){
-    return "/foetex-logo.png";
+    return "../../images/foetex-logo.png";
   }
   else if(storeName.includes("Bilka")){
-    return "/bilka-logo.png";
+    return "../../images/bilka-logo.png";
     }
-  else return "default-logo.png";
+  else return "../../images/default-logo.png";
 }
 
 async function initGetAllStoresByZip() {
@@ -136,7 +136,6 @@ function initializeTable() {
       }
     });
   });
-
   document.getElementById("ingredients").innerHTML = "";
   document.getElementById("ingredients").appendChild(table);
 }
@@ -173,7 +172,7 @@ async function initGetStoreById(storeId) {
   }
 }
 
-  async function initGetResponseFromOpenAI(){
+  async function initGetResponseFromOpenAI() {
     const answer = document.getElementById("chat-answer");
     const spinner = document.getElementById('spinner2');
     try {
@@ -189,6 +188,3 @@ async function initGetStoreById(storeId) {
 
 
   }
-
-
-
