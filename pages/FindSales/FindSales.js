@@ -153,7 +153,7 @@ async function initGetStoreById(storeId, page = 0, pageSize = 10) {
             <td>${clearance.offer.originalPrice}</td>
             <td>${clearance.offer.newPrice}</td>
             <td>${endTime}</td>
-            <td><img style="height:150px;width:150px;" src="${clearance.product.image}" alt="billede" onerror="this.src='images/default-logo.png';"></td>
+            <td><img style="height:150px;width:150px;" src="${clearance.product.image}" alt="billede" onerror="this.src='../../images/default-logo.png';"></td>
             <td><input type="checkbox" id="ingredient-input" value="${clearance.product.description}"></td>
           </tr>
       `;
