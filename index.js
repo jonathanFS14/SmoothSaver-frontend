@@ -16,6 +16,7 @@ window.addEventListener("load", async () => {
   const theme = localStorage.getItem('theme').valueOf()
   document.documentElement.setAttribute('data-bs-theme', theme)
   setStoredTheme(theme)
+  document.getElementById("themeSwitch").checked = theme === "dark" ? true : false
 
   const templateFindSales = await loadHtml("./pages/FindSales/FindSales.html");
   const templateLandingPage = await loadHtml("./pages/landingPage/landingPage.html");

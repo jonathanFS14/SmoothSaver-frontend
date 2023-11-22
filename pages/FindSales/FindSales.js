@@ -209,19 +209,20 @@ function setupPaginationEventListeners(storeId) {
 }
 
 
-  async function initGetResponseFromOpenAI() {
-    const answer = document.getElementById("chat-answer");
-    const spinner = document.getElementById('spinner2');
-    try {
-      spinner.style.display = "block";
-      
-      
-    } catch (error) {
-          document.getElementById("error").innerHTML = error;
+async function initGetResponseFromOpenAI() {
+  const answer = document.getElementById("chat-answer");
+  const spinner = document.getElementById('spinner2');
+  try {
+    spinner.style.display = "block";
+    const aboutParam = encodeURIComponent("hakket-oksekød,tomater,mælk,bananer,mel,fløde,kartofler");
+    const apiUrl = `${API_URL}/openai/limited?about=${aboutParam}`;
+    const response = await fetch(apiUrl).then(handleHttpErrors)
+    const chatResponse = response.answer;
+    answer.innerHTML = chatResponse;
+  } catch (error) {
+    document.getElementById("error").innerHTML = error;
     console.error('Could not fetch the data: ', error);
-    } finally {
-      spinner.style.display = "none";
-    }
-
-
+  } finally {
+    spinner.style.display = "none";
   }
+}
