@@ -2,6 +2,7 @@ import { API_URL } from "../../settings.js"
 import {sanitizeStringWithTableRows, makeOptionsToken, handleHttpErrors} from "../../utils.js"
 
 const URL = API_URL + "/salling"
+let pageSize = 10;
 
 export function initFindSales(match) {
     document.getElementById("zip-form").addEventListener("submit", function (event) {
@@ -138,23 +139,23 @@ function initializeTable() {
   document.getElementById("ingredients").appendChild(table);
 }
 
-async function initGetStoreById(storeId, page = 0, pageSize = 10) {
+async function initGetStoreById(storeId, page = 0) {
   try {
     const response = await fetch(`${URL}/id/${storeId}?page=${page}&size=${pageSize}`);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
     const json = await response.json();
-    const ingredients = json.clearances.map(clearance => {
-      const endTime = new Date(clearance.offer.endTime).toLocaleTimeString([], { day: '2-digit', month: '2-digit', year: "2-digit", hour: '2-digit', minute: '2-digit' });
+    const ingredients = json.content.map(content => {
+      const endTime = new Date(content.offer.endTime).toLocaleTimeString([], { day: '2-digit', month: '2-digit', year: "2-digit", hour: '2-digit', minute: '2-digit' });
       return`
           <tr>
-            <td>${clearance.product.description}</td>
-            <td>${clearance.offer.originalPrice}</td>
-            <td>${clearance.offer.newPrice}</td>
+            <td>${content.product.description}</td>
+            <td>${content.offer.originalPrice}</td>
+            <td>${content.offer.newPrice}</td>
             <td>${endTime}</td>
-            <td><img style="height:150px;width:150px;" src="${clearance.product.image}" alt="billede" onerror="this.src='../../images/default-logo.png';"></td>
-            <td><input type="checkbox" id="ingredient-input" value="${clearance.product.description}"></td>
+            <td><img style="height:150px;width:150px;" src="${content.product.image}" alt="billede" onerror="this.src='../../images/default-logo.png';"></td>
+            <td><input type="checkbox" id="ingredient-input" value="${content.product.description}"></td>
           </tr>
       `;
     });
@@ -164,7 +165,7 @@ async function initGetStoreById(storeId, page = 0, pageSize = 10) {
     const tbody = document.getElementById("ingredients-body");
     tbody.innerHTML = ingredients.join("");
     displayPagination(json.totalPages, page);
-    setupPaginationEventListeners();
+    setupPaginationEventListeners(storeId);
     document.getElementById("fetchmadplan").style.display = "block";
   } catch (error) {
     document.getElementById("error").innerHTML = error;
@@ -194,13 +195,12 @@ function displayPagination(totalPages, currentPage) {
   document.getElementById("pagination").innerHTML = paginationHtml;
 }
 
-function setupPaginationEventListeners() {
+function setupPaginationEventListeners(storeId) {
   document.getElementById('pagination').addEventListener('click', function(event) {
       event.preventDefault();
       if (event.target.tagName === 'A') {
           const newPage = parseInt(event.target.getAttribute('data-page'));
-          currentPage = newPage;
-          initGetStoreById(currentStoreId, newPage); // currentStoreId should be the currently viewed store ID
+          initGetStoreById(storeId, newPage); 
       }
   });
 }
