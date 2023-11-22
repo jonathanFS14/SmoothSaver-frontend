@@ -159,7 +159,6 @@ async function initGetStoreById(storeId, page = 0) {
           </tr>
       `;
     });
-    
     // Initialize and populate the table
     initializeTable();
     const tbody = document.getElementById("ingredients-body");
@@ -196,13 +195,17 @@ function displayPagination(totalPages, currentPage) {
 }
 
 function setupPaginationEventListeners(storeId) {
-  document.getElementById('pagination').addEventListener('click', function(event) {
+  const paginationElement = document.getElementById('pagination');
+  paginationElement.removeEventListener('click', handlePaginationClick);
+
+  function handlePaginationClick(event) {
       event.preventDefault();
       if (event.target.tagName === 'A') {
           const newPage = parseInt(event.target.getAttribute('data-page'));
           initGetStoreById(storeId, newPage); 
       }
-  });
+  }
+  paginationElement.addEventListener('click', handlePaginationClick);
 }
 
 
