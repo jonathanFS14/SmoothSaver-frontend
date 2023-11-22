@@ -4,6 +4,8 @@ import {sanitizeStringWithTableRows, makeOptionsToken, handleHttpErrors} from ".
 const URL = API_URL + "/salling"
 let pageSize = 10;
 
+const valgteVarer = []
+
 export function initFindSales(match) {
     document.getElementById("zip-form").addEventListener("submit", function (event) {
         event.preventDefault();
@@ -155,7 +157,7 @@ async function initGetStoreById(storeId, page = 0) {
             <td>${content.offer.newPrice}</td>
             <td>${endTime}</td>
             <td><img style="height:150px;width:150px;" src="${content.product.image}" alt="billede" onerror="this.src='../../images/default-logo.png';"></td>
-            <td><input type="checkbox" id="ingredient-input" value="${content.product.description}"></td>
+            <td><input type="checkbox" id="ingredient-input" value="${content.product.description}" onchange="handleCheckboxChange(event, '${content.product.description}')"></td>
           </tr>
       `;
     });
@@ -214,15 +216,45 @@ async function initGetResponseFromOpenAI() {
   const spinner = document.getElementById('spinner2');
   try {
     spinner.style.display = "block";
-    const aboutParam = encodeURIComponent("hakket-oksekød,tomater,mælk,bananer,mel,fløde,kartofler");
+    const valgteVarerString = String(valgteVarer);
+    const brugerValg = document.getElementById("user-input").value;
+    //hakket-oksekød,tomater,mælk,bananer,mel,fløde,kartofler, to forskellige korte forslag 
+    const aboutParam = encodeURIComponent(valgteVarerString + ", " + brugerValg + ", to korte forslag" );
     const apiUrl = `${API_URL}/openai/limited?about=${aboutParam}`;
     const response = await fetch(apiUrl).then(handleHttpErrors)
     const chatResponse = response.answer;
     answer.innerHTML = chatResponse;
+    updateChatAnswer(response);
   } catch (error) {
     document.getElementById("error").innerHTML = error;
     console.error('Could not fetch the data: ', error);
   } finally {
     spinner.style.display = "none";
   }
+}
+
+function updateChatAnswer(content) {
+  const chatAnswerElement = document.getElementById('chat-answer');
+  const contentString = String(content);
+  if (contentString.trim().length > 0) {
+     //chatAnswerElement.textContent = content;
+     chatAnswerElement.classList.remove('-hidden');
+     chatAnswerElement.style.display = 'block'; // Ensure the element is shown
+  } else {
+     chatAnswerElement.style.display = 'none'; // Hide the element
+     chatAnswerElement.classList.add('-hidden');
+  }
+}
+
+window.handleCheckboxChange = function(event, description) {
+    if (event.target.checked) {
+        // Add the description to the valgteVarer array if checked
+        valgteVarer.push(description);
+    } else {
+        // Remove the description from the valgteVarer array if unchecked
+        const index = valgteVarer.indexOf(description);
+        if (index > -1) {
+            valgteVarer.splice(index, 1);
+        }
+    }
 }

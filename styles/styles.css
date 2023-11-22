@@ -329,3 +329,15 @@ body::before {
     font-weight:600
   }
 }
+
+.chat-answer {
+    background-color: white;
+    display: inline-block; /* or inline-block */
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin: 10px 0;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+.chat-answer.hidden {
+  display: none;
+}
