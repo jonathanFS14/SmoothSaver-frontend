@@ -216,8 +216,8 @@ async function initGetResponseFromOpenAI() {
   const spinner = document.getElementById('spinner2');
   try {
     spinner.style.display = "block";
-    const valgteVarerString = String(valgteVarer);
-    const brugerValg = document.getElementById("user-input").value;
+    let valgteVarerString = String(valgteVarer);
+    let brugerValg = document.getElementById("user-input").value;
     //hakket-oksekød,tomater,mælk,bananer,mel,fløde,kartofler, to forskellige korte forslag 
     const aboutParam = encodeURIComponent(valgteVarerString + ", " + brugerValg + ", to korte forslag" );
     const apiUrl = `${API_URL}/openai/limited?about=${aboutParam}`;
@@ -225,6 +225,8 @@ async function initGetResponseFromOpenAI() {
     const chatResponse = response.answer;
     answer.innerHTML = chatResponse;
     updateChatAnswer(response);
+    brugerValg = "";
+    valgteVarerString = "";
   } catch (error) {
     document.getElementById("error").innerHTML = error;
     console.error('Could not fetch the data: ', error);
