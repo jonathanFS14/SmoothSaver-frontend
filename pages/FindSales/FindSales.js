@@ -4,7 +4,7 @@ import {sanitizeStringWithTableRows, makeOptionsToken, handleHttpErrors} from ".
 const URL = API_URL + "/salling"
 let pageSize = 10;
 
-const valgteVarer = []
+let valgteVarer = []
 
 export function initFindSales(match) {
     document.getElementById("zip-form").addEventListener("submit", function (event) {
@@ -13,7 +13,7 @@ export function initFindSales(match) {
     });
     document.getElementById("cards-grid").onclick = (evt) => {
       evt.preventDefault();
-      const storeId = evt.target.id;
+      let storeId = evt.target.id;
       if(storeId === "cards-grid") {
         return;
       }
@@ -41,7 +41,7 @@ function getStoreImage(storeName) {
 async function initGetAllStoresByZip() {
   document.getElementById("error").innerHTML = "";
   document.getElementById("cards-grid").innerHTML = "";
-  const zip = document.getElementById("zip").value;
+  let zip = document.getElementById("zip").value;
   const spinner = document.getElementById('spinner');
   try {
     spinner.style.display = "block";
