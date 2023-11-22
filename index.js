@@ -9,6 +9,13 @@ import {
 import {initFindSales} from "./pages/FindSales/FindSales.js"
 
 window.addEventListener("load", async () => {
+   
+   if(localStorage.getItem('theme') === null ){
+    setStoredTheme("dark")
+   }
+  const theme = localStorage.getItem('theme').valueOf()
+  document.documentElement.setAttribute('data-bs-theme', theme)
+  setStoredTheme(theme)
 
   const templateFindSales = await loadHtml("./pages/FindSales/FindSales.html");
   const templateLandingPage = await loadHtml("./pages/landingPage/landingPage.html");
@@ -41,8 +48,13 @@ window.onerror = function (errorMsg, url, lineNumber, column, errorObj) {
       + ' Column: ' + column + ' StackTrace: ' + errorObj);
 }
 
+function setStoredTheme(theme) {
+  localStorage.setItem('theme', theme)
+ } 
 
 document.getElementById("themeSwitch").addEventListener("click", () => {
+  const theme = document.documentElement.getAttribute('data-bs-theme')
+  setStoredTheme(theme)
   const getStoredTheme =  localStorage.getItem('theme').valueOf()
 
   if(getStoredTheme === "light") {  
@@ -52,12 +64,5 @@ document.getElementById("themeSwitch").addEventListener("click", () => {
     document.documentElement.setAttribute('data-bs-theme', 'light')
      setStoredTheme("light")
   }
-
-  function setStoredTheme(theme) {
-   localStorage.setItem('theme', theme)
-  } 
-
-
-
   
 })
