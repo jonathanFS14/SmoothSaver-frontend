@@ -227,6 +227,7 @@ async function initGetResponseFromOpenAI() {
     updateChatAnswer(response);
     brugerValg = "";
     valgteVarerString = "";
+    valgteVarer = [];
   } catch (error) {
     document.getElementById("error").innerHTML = error;
     console.error('Could not fetch the data: ', error);
