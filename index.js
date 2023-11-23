@@ -67,3 +67,13 @@ document.getElementById("themeSwitch").addEventListener("click", () => {
   }
   
 })
+
+document.getElementById("shopping-cart").addEventListener("mouseover", () => {
+ const logo = document.getElementById("cart-logo")
+  logo.classList.add("fa-bounce")
+})
+
+document.getElementById("shopping-cart").addEventListener("mouseout", () => {
+  const logo = document.getElementById("cart-logo")
+  logo.classList.remove("fa-bounce")
+})
