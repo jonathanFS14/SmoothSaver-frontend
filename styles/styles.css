@@ -165,3 +165,16 @@ body::before {
     font-weight: bold;
     color: #009879;
   }
+
+  .login-form {
+    display: none;
+    position: absolute;
+    background: #fff;
+    padding: 10px;
+    border: 1px solid #ccc;
+    z-index: 999;
+  }
+  
+  #login-container:hover .login-form {
+    display: block;
+  }

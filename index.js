@@ -7,8 +7,13 @@ import {
 } from "./utils.js"
 
 import {initFindSales} from "./pages/FindSales/FindSales.js"
+import { API_URL } from "./settings.js"
 
 window.addEventListener("load", async () => {
+
+   //If token existed, for example after a refresh, set UI accordingly
+ const token = localStorage.getItem("token")
+ toggleLoginStatus(token)
    
    if(localStorage.getItem('theme') === null ){
     setStoredTheme("dark")
@@ -19,6 +24,16 @@ window.addEventListener("load", async () => {
 
   const templateFindSales = await loadHtml("./pages/FindSales/FindSales.html");
   const templateLandingPage = await loadHtml("./pages/landingPage/landingPage.html");
+
+  const loginForm = document.getElementById("loginForm");
+  if (loginForm) {
+    loginForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      await login();
+    });
+  } else {
+    console.error("Login form not found!");
+  }
 
   const router = new Navigo("/",{hash:true});
   window.router = router
@@ -36,7 +51,16 @@ window.addEventListener("load", async () => {
         "/find-sales": (match) => {
           renderHtml(templateFindSales, "content")
           initFindSales(match)
-        }
+        },
+        "/logout": () => {
+          renderHtml(templateLandingPage, "content")
+          logout()
+        },
+        /*Profile
+        "/profile": () => {
+          renderHtml(templateProfile, "content")
+          initProfile()
+        }*/
       })
       .notFound(() => document.getElementById("content").innerHTML ="<h2> 404 - Page not found</h2>")
       .resolve()
@@ -66,3 +90,99 @@ document.getElementById("themeSwitch").addEventListener("click", () => {
   }
   
 })
+
+//Login functionality
+
+async function login() {
+  try {
+    const loginForm = document.getElementById("loginForm");
+    const userNameInput = document.querySelector('input[name="username"]');
+    const passwordInput = document.querySelector('input[name="password"]');
+    const loginFailDiv = document.getElementById("login-fail");
+
+    if (!userNameInput || !passwordInput || !loginFailDiv) {
+      console.error("Required elements not found!");
+      return;
+    }
+
+    loginFailDiv.innerText = ""; 
+
+    const loginRequest = {
+      username: userNameInput.value,
+      password: passwordInput.value,
+    };
+
+    const options = {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify(loginRequest),
+    };
+
+    const res = await fetch(API_URL + "/auth/login", options).then((r) =>
+      handleHttpErrors(r)
+    );
+
+    storeLoginDetails(res);
+    window.router.navigate("/");
+  } catch (err) {
+    const loginFailDiv = document.getElementById("login-fail");
+    if (loginFailDiv) {
+      loginFailDiv.innerText = err.message;
+    } else {
+      console.error("Login failure element not found!");
+    }
+  }
+}
+
+/**
+* Store username, roles and token in localStorage, and update UI-status
+* @param res - Response object with details provided by server for a succesful login
+*/
+async function storeLoginDetails(res) {
+  localStorage.setItem("token", res.token)
+  localStorage.setItem("user", res.username)
+  localStorage.setItem("roles", res.roles)
+  toggleLoginStatus(true)
+}
+
+
+async function logout() {
+  localStorage.removeItem("token")
+  localStorage.removeItem("user")
+  localStorage.removeItem("roles")
+  toggleLoginStatus(false)
+  window.router.navigate("login")
+}
+
+async function toggleLoginStatus(loggedIn) {
+  const loginContainer = document.getElementById("login-container");
+  const logoutContainer = document.getElementById("logout-container");
+  const profileContainer = document.getElementById("profile-container");
+  
+  if (loginContainer && logoutContainer && profileContainer) {
+    loginContainer.style.display = loggedIn ? "none" : "block";
+    logoutContainer.style.display = loggedIn ? "block" : "none";
+    profileContainer.style.display = loggedIn ? "block" : "none";
+    
+    const adminListItems = document.querySelectorAll('.admin-only');
+    const userRoutes = document.querySelector('.user-only');
+    
+    if (loggedIn && userRoutes) {
+      let isAdmin = false;
+      let isUser = false;
+      
+      if (localStorage.getItem('roles')) {
+        isAdmin = localStorage.getItem('roles').includes('ADMIN');
+        isUser = localStorage.getItem('roles').includes('USER');
+      }
+      
+      for (let i = 0; i < adminListItems.length; i++) {
+        adminListItems[i].style.display = isAdmin ? "block" : "none";
+      }
+  
+      userRoutes.style.display = isUser ? 'block' : 'none';
+    }
+  } else {
+    console.error("One or more container elements not found!");
+  }
+}
