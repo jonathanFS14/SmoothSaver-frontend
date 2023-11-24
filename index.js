@@ -1,6 +1,7 @@
 
 import "https://unpkg.com/navigo"  //Will create the global Navigo object used below
 import "https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js"
+import { makeOptionsToken } from "./utils.js"
 
 import {
   setActiveLink, renderHtml, loadHtml
@@ -123,12 +124,7 @@ async function login() {
       password: passwordInput.value,
     };
 
-    const options = {
-      method: "POST",
-      headers: { "Content-type": "application/json" },
-      body: JSON.stringify(loginRequest),
-    };
-
+    const options = makeOptionsToken("POST", loginRequest, false);
     const res = await fetch(API_URL + "/auth/login", options).then((r) =>
       handleHttpErrors(r)
     );
