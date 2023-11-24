@@ -21,6 +21,7 @@ window.addEventListener("load", async () => {
   const theme = localStorage.getItem('theme').valueOf()
   document.documentElement.setAttribute('data-bs-theme', theme)
   setStoredTheme(theme)
+  document.getElementById("themeSwitch").checked = theme === "dark" ? true : false
 
   const templateFindSales = await loadHtml("./pages/FindSales/FindSales.html");
   const templateLandingPage = await loadHtml("./pages/landingPage/landingPage.html");
@@ -89,6 +90,16 @@ document.getElementById("themeSwitch").addEventListener("click", () => {
      setStoredTheme("light")
   }
   
+})
+
+document.getElementById("shopping-cart").addEventListener("mouseover", () => {
+ const logo = document.getElementById("cart-logo")
+  logo.classList.add("fa-bounce")
+})
+
+document.getElementById("shopping-cart").addEventListener("mouseout", () => {
+  const logo = document.getElementById("cart-logo")
+  logo.classList.remove("fa-bounce")
 })
 
 //Login functionality
