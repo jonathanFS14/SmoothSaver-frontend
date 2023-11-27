@@ -169,7 +169,7 @@ async function logout() {
   localStorage.removeItem("user")
   localStorage.removeItem("roles")
   toggleLoginStatus(false)
-  window.router.navigate("login")
+  window.router.navigate("/")
 }
 
 async function toggleLoginStatus(loggedIn) {
