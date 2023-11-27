@@ -107,7 +107,6 @@ document.getElementById("shopping-cart").addEventListener("mouseout", () => {
 
 async function login() {
   try {
-    const loginForm = document.getElementById("loginForm");
     const userNameInput = document.querySelector('input[name="username"]');
     const passwordInput = document.querySelector('input[name="password"]');
     const loginFailDiv = document.getElementById("login-fail");
@@ -117,19 +116,28 @@ async function login() {
       return;
     }
 
-    loginFailDiv.innerText = ""; 
+    loginFailDiv.innerText = "";
 
     const loginRequest = {
       username: userNameInput.value,
       password: passwordInput.value,
     };
 
-    const options = makeOptionsToken("POST", loginRequest, false);
-    const res = await fetch(API_URL + "/auth/login", options).then((r) =>
-      handleHttpErrors(r)
-    );
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(loginRequest),
+    };
 
-    storeLoginDetails(res);
+    const res = await fetch(API_URL+"/auth/login", options);
+    if (!res.ok) {
+      throw new Error("Login failed. Please check your credentials.");
+    }
+
+    const data = await res.json();
+    storeLoginDetails(data);
     window.router.navigate("/");
   } catch (err) {
     const loginFailDiv = document.getElementById("login-fail");
@@ -140,6 +148,9 @@ async function login() {
     }
   }
 }
+
+const loginForm = document.getElementById("loginForm");
+loginForm.addEventListener("submit", login);
 
 /**
 * Store username, roles and token in localStorage, and update UI-status
