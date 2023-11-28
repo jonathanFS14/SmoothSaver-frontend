@@ -371,7 +371,7 @@ body::before {
     left: 0px;
     top: 100%;
     z-index: 1000;
-    transform: translateX(-100%);
+    transform: translateX(-90%);
   }
 
   #logout-container:hover .logout-form {
