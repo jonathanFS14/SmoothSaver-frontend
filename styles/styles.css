@@ -377,11 +377,11 @@ body::before {
   #logout-container:hover .logout-form {
     display: block;
     position: absolute;
-    width: 500px;
-    left: 0px;
-    top: 100%;
+    width: 300px;
+    left: 170px;
+    top: 65%;
     z-index: 1000;
-    transform: translateX(-90%);
+    transform: translateX(150%);
   }
 
   #profile{
