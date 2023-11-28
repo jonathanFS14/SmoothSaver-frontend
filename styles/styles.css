@@ -376,6 +376,12 @@ body::before {
 
   #logout-container:hover .logout-form {
     display: block;
+    position: absolute;
+    width: 500px;
+    left: 0px;
+    top: 100%;
+    z-index: 1000;
+    transform: translateX(-90%);
   }
 
   #profile{
