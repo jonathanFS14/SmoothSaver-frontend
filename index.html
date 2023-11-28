@@ -27,31 +27,8 @@
 
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul id="menu" class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item active">
-          <a class="nav-link" href="/find-sales" data-navigo>Find-sales</a>
-        </li>
-        
-        <li class="nav-item" id="profile-container">
-          <a class="nav-link" href="/profile" data-navigo>Profile</a>
-        </li>
-
-        <li class="nav-item" id="login-container">
-          <a class="nav-link" href="#" data-navigo>Login</a>
-          <div id="login-fail"></div>
-          <div class="login-form">
-            <form id="loginForm">
-              <input type="text" placeholder="Username" name="username">
-              <input type="password" placeholder="Password" name="password">
-              <input type="submit" value="Submit">
-            </form>
-            <p><a href="/register">Not registered yet?</a></p>
-          </div>
-        </li>
 
 
-        <li class="nav-item" id="logout-container">
-          <a class="nav-link" href="/logout" data-navigo>Logout</a>
-        </li>
       </ul>
     </div>
 
@@ -60,8 +37,28 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
+    <a href="/find-sales" id="search-food" data-navigo><i class="fa-solid fa-search fa-2xl" id="search-logo" style="color: rgb(200, 31, 31);"></i></a>
     <a href="#" id="shopping-cart"><i class="fa-solid fa-cart-shopping fa-2xl" id="cart-logo" style="color: #00ff62;"></i></a>
-    <a href="#"><i class="fa-solid fa-circle-user fa-2xl"></i></a>
+    <li id="login-container">
+      <a href="#" id="profile"><i class="fa-solid fa-circle-user fa-2xl" id="profile-logo" style="color: grey"></i></a>
+      <div id="login-fail"></div>
+      <div class="login-form">
+        <form id="loginForm">
+          <input type="text" placeholder="Username" name="username">
+          <input type="password" placeholder="Password" name="password">
+          <input type="submit" value="Login">
+        </form>
+        <p><a href="/register">Not registered yet?</a></p>
+      </div>
+    </li>
+    <li id="logout-container">
+      <a href="#" id="profile"><i class="fa-solid fa-circle-user fa-2xl" id="profile-logo" style="color: blue"></i></a>
+      <div class="logout-form">
+        <form id="logoutForm">
+          <input type="submit" value="Logout">
+        </form>
+      </div>
+    </li>
 
   </div>
 </nav>

@@ -350,7 +350,32 @@ body::before {
     border: 1px solid #ccc;
     z-index: 999;
   }
+
+  .logout-form {
+    display: none;
+    position: absolute;
+    background: #fff;
+    padding: 10px;
+    border: 1px solid #ccc;
+    z-index: 999;
+  }
   
   #login-container:hover .login-form {
     display: block;
+  }
+
+  #logout-container:hover .logout-form {
+    display: block;
+  }
+
+  #profile{
+    padding: 10px;
+  }
+
+  #shopping-cart{
+    padding: 10px;
+  }
+
+  #search-food{
+    padding: 10px;
   }
