@@ -359,9 +359,19 @@ body::before {
     border: 1px solid #ccc;
     z-index: 999;
   }
-  
+
+  #login-container {
+    position: relative;
+  }
+
   #login-container:hover .login-form {
     display: block;
+    position: absolute;
+    width: 500px;
+    left: 0px;
+    top: 100%;
+    z-index: 1000;
+    transform: translateX(-100%);
   }
 
   #logout-container:hover .logout-form {
