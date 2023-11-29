@@ -8,6 +8,7 @@ import {
 } from "./utils.js"
 
 import {initFindSales} from "./pages/FindSales/FindSales.js"
+import {initContact} from "./pages/contact/contact.js"
 import { API_URL } from "./settings.js"
 
 window.addEventListener("load", async () => {
@@ -26,16 +27,8 @@ window.addEventListener("load", async () => {
 
   const templateFindSales = await loadHtml("./pages/FindSales/FindSales.html");
   const templateLandingPage = await loadHtml("./pages/landingPage/landingPage.html");
-
-  const loginForm = document.getElementById("loginForm");
-  if (loginForm) {
-    loginForm.addEventListener("submit", async (event) => {
-      event.preventDefault();
-      await login();
-    });
-  } else {
-    console.error("Login form not found!");
-  }
+  const templateAbout = await loadHtml("./pages/about/about.html");
+  const templateContact = await loadHtml("./pages/contact/contact.html");
 
   const router = new Navigo("/",{hash:true});
   window.router = router
@@ -53,6 +46,13 @@ window.addEventListener("load", async () => {
         "/find-sales": (match) => {
           renderHtml(templateFindSales, "content")
           initFindSales(match)
+        },
+        "/about": () => {
+          renderHtml(templateAbout, "content")
+        },
+        "/contact": () => {
+          renderHtml(templateContact, "content")
+          initContact()
         }
         /*Profile
         "/profile": () => {
@@ -101,6 +101,17 @@ document.getElementById("shopping-cart").addEventListener("mouseout", () => {
 
 //Login functionality
 
+const loginForm = document.getElementById("loginForm");
+  
+if (loginForm) {
+  loginForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    await login();
+  });
+} else {
+  console.error("Login form not found!");
+}
+
 async function login() {
   try {
     const userNameInput = document.querySelector('input[name="username"]');
@@ -145,7 +156,6 @@ async function login() {
   }
 }
 
-const loginForm = document.getElementById("loginForm");
 loginForm.addEventListener("submit", login);
 
 const logoutForm = document.getElementById("logoutForm");
@@ -201,3 +211,24 @@ async function toggleLoginStatus(loggedIn) {
     console.error("One or more container elements not found!");
   }
 }
+
+//Privacy policy modal
+
+function openPrivacyPolicy() {
+  const modal = document.getElementById("myModal");
+  modal.style.display = "block"; 
+}
+
+function closePrivacyPolicy() {
+  const modal = document.getElementById("myModal");
+  modal.style.display = "none"; 
+}
+
+document.getElementById("privacyLink").addEventListener("click", function(e) {
+  e.preventDefault();
+  openPrivacyPolicy();
+});
+
+document.querySelector(".close").addEventListener("click", function() {
+  closePrivacyPolicy();
+});
