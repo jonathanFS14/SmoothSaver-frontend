@@ -159,7 +159,7 @@ async function initGetStoreById(storeId, page = 0) {
             <td><img style="height:150px;width:150px;" src="${content.product.image}" alt="billede" onerror="this.src='../../images/default-logo.png';"></td>
             <td><input type="checkbox" id="ingredient-input" value="${content.product.description}" onchange="handleCheckboxChange(event, '${content.product.description}')"></td>
             <td>
-                <button class="add-to-cart-btn" data-description="${content.product.description}" data-quantity="1">Add to Cart</button>
+                <button type="button" class="add-to-cart-btn" data-description="${content.product.description}" data-quantity="1">Add to Cart</button>
             </td>
             </tr>
       `;
@@ -288,6 +288,7 @@ async function addToCart(itemDescription, quantity) {
 
 document.addEventListener("click", function(evt) {
   if (evt.target.closest("#cards-grid") && evt.target.classList.contains("add-to-cart-btn")) {
+    evt.preventDefault();
     const itemDescription = evt.target.getAttribute("data-description");
     const quantity = parseInt(evt.target.getAttribute("data-quantity"), 10);
     addToCart(itemDescription, quantity);
