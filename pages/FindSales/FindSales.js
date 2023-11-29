@@ -163,7 +163,7 @@ async function initGetStoreById(storeId, page = 0) {
             <td><img style="height:150px;width:150px;" src="${content.product.image}" alt="billede" onerror="this.src='../../images/default-logo.png';"></td>
             <td><input type="checkbox" id="ingredient-input" value="${content.product.description}" onchange="handleCheckboxChange(event, '${content.product.description}')"></td>
             <td>
-                <button type="button" class="add-to-cart-btn" data-description="${content.product.description}" data-quantity="1">Add to Cart</button>
+                <button type="button" class="add-to-cart-btn" data-description="${content.product.description}" data-quantity="1" data-store-id="${storeId}">Add to Cart</button>
             </td>
             </tr>
       `;
@@ -172,6 +172,7 @@ async function initGetStoreById(storeId, page = 0) {
     initializeTable();
     const tbody = document.getElementById("ingredients-body");
     tbody.innerHTML = ingredients.join("");
+    attachAddToCartEventListeners();
     displayPagination(json.totalPages, page);
     setupPaginationEventListeners(storeId);
     document.getElementById("fetchmadplan").style.display = "block";
@@ -269,7 +270,30 @@ window.handleCheckboxChange = function(event, description) {
     }
 }
 
+// async function fetchCartContents() {
+//   const options = makeOptionsToken("GET", null, true); // true to add token if needed
+
+//   try {
+//       const response = await fetch(`${URL}/cart/items`, options);
+//       if (!response.ok) {
+//           throw new Error(`HTTP error! Status: ${response.status}`);
+//       }
+//       const cartItems = await response.json();
+//       updateShoppingCartWithFetchedItems(cartItems);
+//   } catch (error) {
+//       console.error("Error fetching cart contents:", error);
+//   }
+// }
+
+// function updateShoppingCartWithFetchedItems(cartItems) {
+//   shoppingCart.items = cartItems;
+//   shoppingCart.totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
+//   updateCartUI();
+//   viewCartContents(); // If you want to display the contents immediately
+// }
+
 async function addToCart(itemDescription, quantity, storeId) {
+  console.log("Adding to cart:", itemDescription, quantity, storeId);
   const data = {
       itemDescription: itemDescription,
       quantity: quantity,
@@ -280,6 +304,7 @@ async function addToCart(itemDescription, quantity, storeId) {
 
   try {
       const response = await fetch(`${URL}/addToCart`, options);
+      console.log("Response from addToCart API:", await response.json());
       handleHttpErrors(response);
       updateShoppingCart(itemDescription, quantity, storeId);
   } catch (error) {
@@ -288,8 +313,8 @@ async function addToCart(itemDescription, quantity, storeId) {
 }
 
 function openShoppingCartModal() {
-  document.getElementById('shopping-cart-modal').style.display = 'block';
   viewCartContents();
+  document.getElementById('shopping-cart-modal').style.display = 'block';
 }
 
 function closeShoppingCartModal() {
@@ -309,8 +334,13 @@ function updateShoppingCart(itemDescription, quantity, storeId) {
 }
 
 function updateCartUI() {
-  const cartIndicator = document.getElementById('cart-logo');
-  cartIndicator.textContent = `Cart (${shoppingCart.totalQuantity} items)`;
+  const cartItemCount = document.getElementById('cart-item-count');
+  if (shoppingCart.totalQuantity > 0) {
+      cartItemCount.textContent = shoppingCart.totalQuantity;
+      cartItemCount.style.display = 'block'; // Show the count badge
+  } else {
+      cartItemCount.style.display = 'none'; // Hide the badge when count is 0
+  }
 }
 
 function viewCartContents() {
@@ -326,16 +356,22 @@ function viewCartContents() {
 
 document.getElementById('shopping-cart').addEventListener('click', function(event) {
   event.preventDefault();
+  //fetchCartContents();
   openShoppingCartModal();
 });
 
 document.getElementById('close-shopping-cart-modal').addEventListener('click', closeShoppingCartModal);
 
-document.addEventListener("click", function(evt) {
-  if (evt.target.closest("#cards-grid") && evt.target.classList.contains("add-to-cart-btn")) {
-      const itemDescription = evt.target.getAttribute("data-description");
-      const quantity = parseInt(evt.target.getAttribute("data-quantity"), 10);
-      const storeId = evt.target.getAttribute("data-store-id"); // Make sure this is set on the button
-      addToCart(itemDescription, quantity, storeId);
+function attachAddToCartEventListeners() {
+  const addToCartButtons = document.getElementsByClassName("add-to-cart-btn");
+  console.log("Attaching event listeners to", addToCartButtons.length, "buttons");
+  for (const btn of addToCartButtons) {
+      btn.addEventListener("click", function(evt) {
+          evt.stopPropagation();
+          const itemDescription = evt.target.getAttribute("data-description");
+          const quantity = parseInt(evt.target.getAttribute("data-quantity"), 10);
+          const storeId = evt.target.getAttribute("data-store-id");
+          addToCart(itemDescription, quantity, storeId);
+      });
   }
-});
+}
