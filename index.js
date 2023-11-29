@@ -53,11 +53,7 @@ window.addEventListener("load", async () => {
         "/find-sales": (match) => {
           renderHtml(templateFindSales, "content")
           initFindSales(match)
-        },
-        "/logout": () => {
-          renderHtml(templateLandingPage, "content")
-          logout()
-        },
+        }
         /*Profile
         "/profile": () => {
           renderHtml(templateProfile, "content")
@@ -152,6 +148,9 @@ async function login() {
 const loginForm = document.getElementById("loginForm");
 loginForm.addEventListener("submit", login);
 
+const logoutForm = document.getElementById("logoutForm");
+logoutForm.addEventListener("submit", logout);
+
 /**
 * Store username, roles and token in localStorage, and update UI-status
 * @param res - Response object with details provided by server for a succesful login
@@ -175,12 +174,10 @@ async function logout() {
 async function toggleLoginStatus(loggedIn) {
   const loginContainer = document.getElementById("login-container");
   const logoutContainer = document.getElementById("logout-container");
-  const profileContainer = document.getElementById("profile-container");
   
-  if (loginContainer && logoutContainer && profileContainer) {
+  if (loginContainer && logoutContainer) {
     loginContainer.style.display = loggedIn ? "none" : "block";
     logoutContainer.style.display = loggedIn ? "block" : "none";
-    profileContainer.style.display = loggedIn ? "block" : "none";
     
     const adminListItems = document.querySelectorAll('.admin-only');
     const userRoutes = document.querySelector('.user-only');

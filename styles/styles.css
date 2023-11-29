@@ -332,7 +332,7 @@ body::before {
 
 .chat-answer {
     background-color: white;
-    display: inline-block; /* or inline-block */
+    display: inline-block;
     padding: 10px;
     border: 1px solid #ccc;
     margin: 10px 0;
@@ -350,7 +350,48 @@ body::before {
     border: 1px solid #ccc;
     z-index: 999;
   }
-  
+
+  .logout-form {
+    display: none;
+    position: absolute;
+    background: #fff;
+    padding: 10px;
+    border: 1px solid #ccc;
+    z-index: 999;
+  }
+
+  #login-container {
+    position: relative;
+  }
+
   #login-container:hover .login-form {
     display: block;
+    position: absolute;
+    width: 500px;
+    left: 0px;
+    top: 100%;
+    z-index: 1000;
+    transform: translateX(-90%);
+  }
+
+  #logout-container:hover .logout-form {
+    display: block;
+    position: absolute;
+    width: 300px;
+    right: -200px;
+    top: 75%;
+    z-index: 1000;
+    
+  }
+
+  #profile{
+    padding: 10px;
+  }
+
+  #shopping-cart{
+    padding: 10px;
+  }
+
+  #search-food{
+    padding: 10px;
   }
