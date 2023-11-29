@@ -5,6 +5,10 @@ const URL = API_URL + "/salling"
 let pageSize = 10;
 
 let valgteVarer = []
+let shoppingCart = {
+  items: [],
+  totalQuantity: 0
+};
 
 export function initFindSales(match) {
     document.getElementById("zip-form").addEventListener("submit", function (event) {
@@ -265,32 +269,73 @@ window.handleCheckboxChange = function(event, description) {
     }
 }
 
-async function addToCart(itemDescription, quantity) {
+async function addToCart(itemDescription, quantity, storeId) {
   const data = {
       itemDescription: itemDescription,
       quantity: quantity,
-      // Include storeId if necessary
+      storeId: storeId
   };
 
-  const options = makeOptionsToken("POST", data); // Ensure this creates a proper request with a token for authentication
+  const options = makeOptionsToken("POST", data); // Implement makeOptionsToken for authentication
 
   try {
       const response = await fetch(`${URL}/addToCart`, options);
       handleHttpErrors(response);
-
-      // Optionally update the UI to reflect the item addition
-      console.log("Item added to cart");
+      updateShoppingCart(itemDescription, quantity, storeId);
   } catch (error) {
       console.error("Error adding item to cart:", error);
   }
 }
 
+function openShoppingCartModal() {
+  document.getElementById('shopping-cart-modal').style.display = 'block';
+  viewCartContents();
+}
+
+function closeShoppingCartModal() {
+  document.getElementById('shopping-cart-modal').style.display = 'none';
+}
+
+function updateShoppingCart(itemDescription, quantity, storeId) {
+  // Add item to the cart or update quantity if it already exists
+  let existingItem = shoppingCart.items.find(item => item.description === itemDescription && item.storeId === storeId);
+  if (existingItem) {
+      existingItem.quantity += quantity;
+  } else {
+      shoppingCart.items.push({ description: itemDescription, quantity: quantity, storeId: storeId });
+  }
+  shoppingCart.totalQuantity += quantity;
+  updateCartUI();
+}
+
+function updateCartUI() {
+  const cartIndicator = document.getElementById('cart-logo');
+  cartIndicator.textContent = `Cart (${shoppingCart.totalQuantity} items)`;
+}
+
+function viewCartContents() {
+  let cartContentsHtml = shoppingCart.items.map(item => `
+      <div class="cart-item">
+          <span>${item.description}</span>
+          <span>Quantity: ${item.quantity}</span>
+          <span>Store ID: ${item.storeId}</span>
+      </div>
+  `).join('');
+  document.getElementById('shopping-cart-items').innerHTML = cartContentsHtml;
+}
+
+document.getElementById('shopping-cart').addEventListener('click', function(event) {
+  event.preventDefault();
+  openShoppingCartModal();
+});
+
+document.getElementById('close-shopping-cart-modal').addEventListener('click', closeShoppingCartModal);
 
 document.addEventListener("click", function(evt) {
   if (evt.target.closest("#cards-grid") && evt.target.classList.contains("add-to-cart-btn")) {
-    const itemDescription = evt.target.getAttribute("data-description");
-    const quantity = parseInt(evt.target.getAttribute("data-quantity"), 10);
-    addToCart(itemDescription, quantity);
+      const itemDescription = evt.target.getAttribute("data-description");
+      const quantity = parseInt(evt.target.getAttribute("data-quantity"), 10);
+      const storeId = evt.target.getAttribute("data-store-id"); // Make sure this is set on the button
+      addToCart(itemDescription, quantity, storeId);
   }
 });
-
