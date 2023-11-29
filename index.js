@@ -227,8 +227,8 @@ function closePrivacyPolicy() {
 document.getElementById("privacyLink").addEventListener("click", function(e) {
   e.preventDefault();
   openPrivacyPolicy();
-});
+})
 
 document.querySelector(".close").addEventListener("click", function() {
   closePrivacyPolicy();
-});
+})
