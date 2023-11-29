@@ -158,7 +158,10 @@ async function initGetStoreById(storeId, page = 0) {
             <td>${endTime}</td>
             <td><img style="height:150px;width:150px;" src="${content.product.image}" alt="billede" onerror="this.src='../../images/default-logo.png';"></td>
             <td><input type="checkbox" id="ingredient-input" value="${content.product.description}" onchange="handleCheckboxChange(event, '${content.product.description}')"></td>
-          </tr>
+            <td>
+                <button class="add-to-cart-btn" data-description="${content.product.description}" data-quantity="1">Add to Cart</button>
+            </td>
+            </tr>
       `;
     });
     // Initialize and populate the table
@@ -261,3 +264,33 @@ window.handleCheckboxChange = function(event, description) {
         }
     }
 }
+
+async function addToCart(itemDescription, quantity) {
+  const data = {
+      itemDescription: itemDescription,
+      quantity: quantity,
+      // Include storeId if necessary
+  };
+
+  const options = makeOptionsToken("POST", data); // Ensure this creates a proper request with a token for authentication
+
+  try {
+      const response = await fetch(`${URL}/addToCart`, options);
+      handleHttpErrors(response);
+
+      // Optionally update the UI to reflect the item addition
+      console.log("Item added to cart");
+  } catch (error) {
+      console.error("Error adding item to cart:", error);
+  }
+}
+
+
+document.addEventListener("click", function(evt) {
+  if (evt.target.closest("#cards-grid") && evt.target.classList.contains("add-to-cart-btn")) {
+    const itemDescription = evt.target.getAttribute("data-description");
+    const quantity = parseInt(evt.target.getAttribute("data-quantity"), 10);
+    addToCart(itemDescription, quantity);
+  }
+});
+
