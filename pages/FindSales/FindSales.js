@@ -349,7 +349,7 @@ function viewCartContents() {
       <div class="cart-item">
           <span>${item.description}</span>
           <span>Quantity: ${item.quantity}</span>
-          <span>Store ID: ${item.storeId}</span>
+          <span>Store: ${item.storeName}</span>
       </div>
   `).join('');
   document.getElementById('shopping-cart-items').innerHTML = cartContentsHtml;

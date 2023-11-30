@@ -11,6 +11,7 @@ import {initFindSales} from "./pages/FindSales/FindSales.js"
 import {initContact} from "./pages/contact/contact.js"
 import { API_URL } from "./settings.js"
 import { initSignup } from "./pages/signup/signup.js"
+import { initProfile } from "./pages/profile/profile.js"
 
 window.addEventListener("load", async () => {
 
@@ -31,6 +32,7 @@ window.addEventListener("load", async () => {
   const templateAbout = await loadHtml("./pages/about/about.html");
   const templateContact = await loadHtml("./pages/contact/contact.html");
   const templateRegister = await loadHtml("./pages/signup/signup.html");
+  const templateProfile = await loadHtml("./pages/profile/profile.html");
 
   const router = new Navigo("/",{hash:true});
   window.router = router
@@ -59,12 +61,11 @@ window.addEventListener("load", async () => {
         "/register": () => {
           renderHtml(templateRegister, "content")
           initSignup()
-        }
-        /*Profile
+        },
         "/profile": () => {
           renderHtml(templateProfile, "content")
           initProfile()
-        }*/
+        }
       })
       .notFound(() => document.getElementById("content").innerHTML ="<h2> 404 - Page not found</h2>")
       .resolve()
