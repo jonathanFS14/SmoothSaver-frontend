@@ -423,3 +423,22 @@ body::before {
     right: 10px;
     cursor: pointer;
 }
+
+#shopping-cart {
+  position: relative; /* Needed for absolute positioning of the child */
+  display: inline-block; /* Or other suitable display type */
+}
+
+.cart-count {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 5px;
+  font-size: 12px; /* Adjust size as needed */
+  line-height: 1;
+  min-width: 18px; /* Ensures the badge is round */
+  text-align: center;
+}
