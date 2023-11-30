@@ -22,12 +22,15 @@ async function signUp(event) {
 
   const user = { username, password, email, firstName, lastName, phoneNumber, address }
 
-  const options = makeOptions("POST", user);
-  fetch(URL, options)
-  .then(handleHttpErrors)
-  .then( 
-    userResponse => document.getElementById("new-user-response")
-    .innerText = JSON.stringify(userResponse, null, 3)).catch(err =>
+    const options = makeOptions("POST", user);
+    fetch(URL, options)
+    .then(handleHttpErrors)
+    .then(userResponse => {
+        alert("Oprettelse af bruger vellykket!");
+        window.location.href = "/";
+        //document.getElementById("new-user-response")
+        //.innerText = JSON.stringify(userResponse, null, 3)
+    }).catch(err =>
         document.getElementById("new-user-response").innerHTML = err
     )
     
