@@ -27,6 +27,11 @@ export function initFindSales(match) {
       evt.preventDefault();
       initGetResponseFromOpenAI();
     });
+    const savedCart = localStorage.getItem('shoppingCart');
+    if (savedCart) {
+        shoppingCart = JSON.parse(savedCart);
+        updateCartUI();
+    }
 }
 
 function getStoreImage(storeName) {
@@ -271,18 +276,19 @@ window.handleCheckboxChange = function(event, description) {
     }
 }
 
-// async function fetchCartContents() {
-//   const options = makeOptionsToken("GET", null, true); // true to add token if needed
-
+// async function fetchCartContents(cartId) {
 //   try {
-//       const response = await fetch(`${URL}/cart/items`, options);
-//       if (!response.ok) {
-//           throw new Error(`HTTP error! Status: ${response.status}`);
-//       }
-//       const cartItems = await response.json();
-//       updateShoppingCartWithFetchedItems(cartItems);
+//     const response = await fetch(`${URL}/cart/${cartId}`);
+//     if (!response.ok) {
+//       throw new Error(`HTTP error! Status: ${response.status}`);
+//     }
+//     const cartItemsFromServer = await response.json();
+//     shoppingCart.items = cartItemsFromServer;
+//     shoppingCart.totalQuantity = cartItemsFromServer.reduce((total, item) => total + item.quantity, 0);
+//     updateCartUI();
+//     viewCartContents();
 //   } catch (error) {
-//       console.error("Error fetching cart contents:", error);
+//     console.error("Error fetching cart contents:", error);
 //   }
 // }
 
@@ -331,6 +337,7 @@ function updateShoppingCart(itemDescription, quantity, storeId) {
       shoppingCart.items.push({ description: itemDescription, quantity: quantity, storeId: storeId });
   }
   shoppingCart.totalQuantity += quantity;
+  localStorage.setItem('shoppingCart', JSON.stringify(shoppingCart));
   updateCartUI();
 }
 
@@ -344,12 +351,29 @@ function updateCartUI() {
   }
 }
 
+async function removeFromCart(cartId, itemDescription, quantityToRemove) {
+  const data = { itemDescription, quantityToRemove };
+
+  const options = makeOptionsToken("DELETE", data); // Use your existing method for generating request options
+
+  try {
+      const response = await fetch(`${API_URL}/cart/${cartId}`, options);
+      if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      console.log("Item removed from cart");
+  } catch (error) {
+      console.error("Error removing item from cart:", error);
+  }
+}
+
 function viewCartContents() {
   let cartContentsHtml = shoppingCart.items.map(item => `
       <div class="cart-item">
           <span>${item.description}</span>
           <span>Quantity: ${item.quantity}</span>
           <span>Store: ${item.storeName}</span>
+          <button onclick="removeFromCart('${item.description}', ${item.quantity})">Remove</button>
       </div>
   `).join('');
   document.getElementById('shopping-cart-items').innerHTML = cartContentsHtml;
