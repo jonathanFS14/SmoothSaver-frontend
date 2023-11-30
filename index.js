@@ -10,6 +10,7 @@ import {
 import {initFindSales} from "./pages/FindSales/FindSales.js"
 import {initContact} from "./pages/contact/contact.js"
 import { API_URL } from "./settings.js"
+import { initSignup } from "./pages/signup/signup.js"
 
 window.addEventListener("load", async () => {
 
@@ -29,6 +30,7 @@ window.addEventListener("load", async () => {
   const templateLandingPage = await loadHtml("./pages/landingPage/landingPage.html");
   const templateAbout = await loadHtml("./pages/about/about.html");
   const templateContact = await loadHtml("./pages/contact/contact.html");
+  const templateRegister = await loadHtml("./pages/signup/signup.html");
 
   const router = new Navigo("/",{hash:true});
   window.router = router
@@ -53,6 +55,10 @@ window.addEventListener("load", async () => {
         "/contact": () => {
           renderHtml(templateContact, "content")
           initContact()
+        },
+        "/register": () => {
+          renderHtml(templateRegister, "content")
+          initSignup()
         }
         /*Profile
         "/profile": () => {
