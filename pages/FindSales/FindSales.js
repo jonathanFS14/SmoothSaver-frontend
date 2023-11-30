@@ -228,6 +228,7 @@ async function initGetResponseFromOpenAI() {
     let brugerValg = document.getElementById("user-input").value;
     //hakket-oksekød,tomater,mælk,bananer,mel,fløde,kartofler, to forskellige korte forslag 
     const aboutParam = encodeURIComponent(valgteVarerString + ", " + brugerValg + ", to korte forslag" );
+    console.log(aboutParam);
     const apiUrl = `${API_URL}/openai/limited?about=${aboutParam}`;
     const response = await fetch(apiUrl).then(handleHttpErrors)
     const chatResponse = response.answer;
