@@ -5,11 +5,11 @@ const URL = API_URL + "/user"
 
 export function initSignup() {
     document.getElementById("new-user-response").innerText = "";
-    document.getElementById("form").addEventListener("submit", singUp)
+    document.getElementById("form").addEventListener("submit", signUp)
 }
 
 
-async function singUp(event) {
+async function signUp(event) {
     event.preventDefault();
   var username = document.getElementById("input-username").value
   var password = document.getElementById("input-password").value
@@ -26,8 +26,8 @@ async function singUp(event) {
   fetch(URL, options)
   .then(handleHttpErrors)
   .then( 
-    carResponse => document.getElementById("new-user-response")
-    .innerText = JSON.stringify(carResponse, null, 3)).catch(err =>
+    userResponse => document.getElementById("new-user-response")
+    .innerText = JSON.stringify(userResponse, null, 3)).catch(err =>
         document.getElementById("new-user-response").innerHTML = err
     )
     
