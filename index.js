@@ -180,7 +180,7 @@ async function storeLoginDetails(res) {
 }
 
 
-async function logout() {
+export async function logout() {
   localStorage.removeItem("token")
   localStorage.removeItem("user")
   localStorage.removeItem("roles")
