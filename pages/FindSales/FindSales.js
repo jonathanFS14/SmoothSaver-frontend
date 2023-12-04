@@ -351,21 +351,37 @@ function updateCartUI() {
   }
 }
 
-async function removeFromCart(cartId, itemDescription, quantityToRemove) {
-  const data = { itemDescription, quantityToRemove };
+async function removeFromCart(itemDescription, quantity) {
+    // Assuming you have a way to get the cartId
+    const cartId = localStorage.getItem('cartId');
+    const data = { itemDescription, quantity };
 
-  const options = makeOptionsToken("DELETE", data); // Use your existing method for generating request options
+    const options = makeOptionsToken("DELETE", data); // Use your existing method for generating request options
 
-  try {
-      const response = await fetch(`${API_URL}/cart/${cartId}`, options);
-      if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      console.log("Item removed from cart");
-  } catch (error) {
-      console.error("Error removing item from cart:", error);
-  }
+    try {
+        const response = await fetch(`${URL}/cart/${cartId}`, options);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        console.log("Item removed from cart");
+
+        // Update the shopping cart after removal
+        const itemIndex = shoppingCart.items.findIndex(item => item.description === itemDescription);
+        if (itemIndex > -1) {
+            shoppingCart.items[itemIndex].quantity -= quantity;
+            if (shoppingCart.items[itemIndex].quantity <= 0) {
+                shoppingCart.items.splice(itemIndex, 1); // Remove the item if quantity is 0
+            }
+            shoppingCart.totalQuantity -= quantity;
+            localStorage.setItem('shoppingCart', JSON.stringify(shoppingCart)); // Save updated cart to localStorage
+            updateCartUI(); // Update the UI to reflect the changes
+            viewCartContents(); // Optionally, refresh the cart modal to reflect the changes
+        }
+    } catch (error) {
+        console.error("Error removing item from cart:", error);
+    }
 }
+
 
 function viewCartContents() {
   let cartContentsHtml = shoppingCart.items.map(item => `
@@ -373,10 +389,11 @@ function viewCartContents() {
           <span>${item.description}</span>
           <span>Quantity: ${item.quantity}</span>
           <span>Store: ${item.storeName}</span>
-          <button onclick="removeFromCart('${item.description}', ${item.quantity})">Remove</button>
+          <button class="remove-from-cart-btn" data-description="${item.description}" data-quantity="${item.quantity}">Remove</button>
       </div>
   `).join('');
   document.getElementById('shopping-cart-items').innerHTML = cartContentsHtml;
+  attachRemoveFromCartEventListeners();
 }
 
 document.getElementById('shopping-cart').addEventListener('click', function(event) {
@@ -397,6 +414,17 @@ function attachAddToCartEventListeners() {
           const quantity = parseInt(evt.target.getAttribute("data-quantity"), 10);
           const storeId = evt.target.getAttribute("data-store-id");
           addToCart(itemDescription, quantity, storeId);
+      });
+  }
+}
+
+function attachRemoveFromCartEventListeners() {
+  const removeButtons = document.getElementsByClassName("remove-from-cart-btn");
+  for (const btn of removeButtons) {
+      btn.addEventListener("click", function(evt) {
+          const itemDescription = evt.target.getAttribute("data-description");
+          const quantity = parseInt(evt.target.getAttribute("data-quantity"), 10);
+          removeFromCart(itemDescription, quantity);
       });
   }
 }
